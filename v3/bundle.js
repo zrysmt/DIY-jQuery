@@ -27,6 +27,7 @@ var jQuery$1 = function jQuery$1(selector, context) {
 jQuery$1.fn = jQuery$1.prototype = {
     jquery: version,
     constructor: jQuery$1,
+    length: 0, // 修改点1，jQuery实例.length 默认为0,这句一定要有，否则length会NAN
     setBackground: function setBackground() {
         this[0].style.background = 'yellow';
         return this;
@@ -41,25 +42,13 @@ jQuery$1.fn = jQuery$1.prototype = {
      * @return {[*]}  
      */
     pushStack: function pushStack(elems) {
-        // this.constructor().length = 0;
         var ret = jQuery$1.merge(this.constructor(), elems); //this.constructor() 返回了一个 length 为0的jQuery对象
         ret.prevObject = this;
         return ret;
     }
 };
 
-//新增修改点1，class2type注入各JS类型键值对，配合 jQuery.type 使用，后面会用上
-"Boolean Number String Function Array Date RegExp Object Error Symbol".split(" ").forEach(function (name) {
-    class2type["[object " + name + "]"] = name.toLowerCase();
-});
-
 jQuery$1.extend = jQuery$1.fn.extend = function () {
-    /*var isObject = function(obj) {
-        return Object.prototype.toString.call(obj) === "[object Object]";
-    };*/
-    var isArray = function isArray(obj) {
-        return Object.prototype.toString.call(obj) === "[object Array]";
-    };
     var name,
         clone,
         copy,
@@ -95,13 +84,13 @@ jQuery$1.extend = jQuery$1.fn.extend = function () {
                     continue;
                 }
                 //深拷贝，且确保被拷属性为对象/数组
-                if (deep && copy && jQuery$1.isPlainObject(copy) || (copyIsArray = isArray(copy))) {
+                if (deep && copy && (jQuery$1.isPlainObject(copy) || (copyIsArray = jQuery$1.isArray(copy)))) {
                     //修改2
                     //被拷贝属性为数组
                     if (copyIsArray) {
                         copyIsArray = false;
                         //被合并属性
-                        clone = src && isArray(src) ? src : []; //修改3
+                        clone = src && jQuery$1.isArray(src) ? src : []; //修改3
                     } else {
                         //被拷贝属性为对象
                         clone = src && jQuery$1.isPlainObject(src) ? src : {}; //修改4
@@ -120,10 +109,18 @@ jQuery$1.extend = jQuery$1.fn.extend = function () {
 
     return target;
 };
-
+//新增修改点1，class2type注入各JS类型键值对，配合 jQuery.type 使用，后面会用上
+"Boolean Number String Function Array Date RegExp Object Error Symbol".split(" ").forEach(function (name) {
+    class2type["[object " + name + "]"] = name.toLowerCase();
+});
 //新增修改点2
 jQuery$1.extend({
-    isArray: Array.isArray,
+    isArray: Array.isArray || function (obj) {
+        return jQuery$1.type(obj) === "array";
+    },
+    isFunction: function isFunction(obj) {
+        return jQuery$1.type(obj) === "function";
+    },
     isPainObject: function isPainObject(obj) {
         var proto, Ctor;
 
@@ -156,7 +153,7 @@ jQuery$1.extend({
     merge: function merge(first, second) {
         var len = +second.length,
             j = 0,
-            i = first.length ? first.length : 0;
+            i = first.length;
         for (; j < len; j++) {
             first[i++] = second[j];
         }
@@ -239,7 +236,6 @@ var init = function init(jQuery) {
         } else {
             var elemList = jQuery.find(selector);
             if (elemList.length) {
-                // this.length = 0; //必须要，否则length为NAN
                 jQuery.merge(this, elemList); //this是jQuery实例，默认实例属性 .length 为0
             }
             return this;
