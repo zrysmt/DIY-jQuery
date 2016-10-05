@@ -1,0 +1,7 @@
+demo1   将v1文件夹覆盖项目外层的文件夹，执行命令 rollup -c rollup.config.dev.js即可
+
+demo2   将v2文件夹覆盖项目外层的文件夹，执行命令 rollup -c rollup.config.dev.js即可
+
+demo3   将v3文件夹覆盖项目外层的文件夹，执行命令 rollup -c rollup.config.dev.js即可
+
+注意：src文件夹一定要全覆盖

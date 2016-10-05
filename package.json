@@ -1,0 +1,17 @@
+{
+  "name": "fquery",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jquery.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup src/jquery.js --output bundle.js -f cjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-es2015-rollup": "^1.2.0",
+    "rollup": "^0.36.1",
+    "rollup-plugin-babel": "^2.6.1"
+  }
+}

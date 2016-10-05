@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>测试</title>
+    <style>
+    div {
+        height: 100px;
+        width: 100px;
+    }
+    </style>
+</head>
+
+<body>
+    <div></div>
+    <script src="bundle.js"></script>
+    <script>
+    var div = $('div');
+    div.setBackground();
+
+    var arr = [1, 2, 3];
+    console.log($.type(arr))
+
+    function a() {};
+
+    var b = {};
+    var c = Object.create(a);
+    var d = Object.create(null);
+    console.log($.isPainObject(a));//false
+    console.log($.isPainObject(b));//true
+    console.log($.isPainObject(c));//false
+    console.log($.isPainObject(d));//true
+    console.log($.isPainObject(document));//false
+    console.log($.type(a));
+    console.log($.type(b));
+    console.log($.type(c));
+    console.log($.type(d));
+    console.log($.type(document));
+    </script>
+</body>
+
+</html>
